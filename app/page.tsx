@@ -12,7 +12,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-24 relative">
           <div className="text-center max-w-4xl mx-auto">
             <div className="flex items-center justify-center gap-3 mb-8">
-              <SplitIcon className="h-12 w-12 text-primary" />
+              <SplitIcon className="h-16 w-16 text-primary" />
               <span className="text-4xl font-bold">FairSplit</span>
             </div>
             <h1 className="text-6xl md:text-7xl font-bold tracking-tight mb-8">
