@@ -1,0 +1,71 @@
+{
+  "common": {
+    "appName": "FairSplit",
+    "tagline": {
+      "part1": "Split Expenses,",
+      "part2": "Not Friendships"
+    },
+    "description": "The smartest way to manage shared expenses. Perfect for roommates, trips, and groups. Powered by AI receipt scanning.",
+    "buttons": {
+      "startSplitting": "Start Splitting",
+      "createGroup": "Create Group",
+      "continue": "Continue",
+      "copy": "Copy",
+      "share": "Share"
+    }
+  },
+  "features": {
+    "scanning": {
+      "title": "Smart Receipt Scanning",
+      "description": "Just snap a photo of your receipt and let AI do the work"
+    },
+    "splitting": {
+      "title": "Intelligent Splitting",
+      "description": "Automatically calculate the fairest way to split expenses"
+    },
+    "currencies": {
+      "title": "Multiple Currencies",
+      "description": "Support for all major currencies with real-time conversion"
+    }
+  },
+  "stats": {
+    "users": {
+      "value": "1M+",
+      "label": "Active Users"
+    },
+    "expenses": {
+      "value": "$500M+",
+      "label": "Expenses Tracked"
+    },
+    "countries": {
+      "value": "190+",
+      "label": "Countries"
+    }
+  },
+  "cta": {
+    "title": "Ready to Get Started?",
+    "description": "Join millions of users who trust FairSplit for their expense sharing",
+    "button": "Create Your First Group"
+  },
+  "groupCreation": {
+    "success": {
+      "title": "Group Created!",
+      "description": "Share this link with your friends to invite them to your group"
+    },
+    "form": {
+      "groupName": {
+        "label": "Group Name",
+        "placeholder": "e.g., Trip to Paris"
+      },
+      "currency": {
+        "label": "Currency",
+        "placeholder": "Select a currency"
+      },
+      "members": {
+        "label": "Members",
+        "addButton": "Add Member",
+        "placeholder": "Member {number}"
+      }
+    }
+  }
+}

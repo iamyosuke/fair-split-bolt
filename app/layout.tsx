@@ -1,8 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Toaster } from '@/components/ui/toaster';
-import { Header } from '@/components/header';
+import { ClientLayout } from './client-layout';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,13 +16,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="light" style={{ colorScheme: 'light' }}>
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <Header />
-        <main>
-          {children}
-        </main>
-        <Toaster />
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
