@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BanknoteIcon, ChartBarIcon, ScanIcon, UsersIcon } from 'lucide-react';
+import { BanknoteIcon, ChartBarIcon, ScanIcon, UsersIcon, SplitIcon } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -11,6 +11,10 @@ export default function Home() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4ade8020_1px,transparent_1px),linear-gradient(to_bottom,#4ade8020_1px,transparent_1px)] bg-[size:14px_24px]"></div>
         <div className="container mx-auto px-4 py-24 relative">
           <div className="text-center max-w-4xl mx-auto">
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <SplitIcon className="h-12 w-12 text-primary" />
+              <span className="text-4xl font-bold">FairSplit</span>
+            </div>
             <h1 className="text-6xl md:text-7xl font-bold tracking-tight mb-8">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
                 Split Expenses,
@@ -22,15 +26,10 @@ export default function Home() {
               The smartest way to manage shared expenses. Perfect for roommates,
               trips, and groups. Powered by AI receipt scanning.
             </p>
-            <div className="flex gap-4 justify-center">
+            <div className="flex justify-center">
               <Link href="/groups/new">
                 <Button size="lg" className="text-lg h-14 px-8">
                   Start Splitting
-                </Button>
-              </Link>
-              <Link href="/groups/join">
-                <Button size="lg" variant="outline" className="text-lg h-14 px-8">
-                  Join Group
                 </Button>
               </Link>
             </div>

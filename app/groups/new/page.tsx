@@ -106,8 +106,8 @@ export default function NewGroup() {
         description: "Group created successfully.",
       });
 
-      // Redirect to group page
-      router.push(`/groups/${groupData.id}`);
+      // Redirect to confirmation page with group ID
+      router.push(`/groups/confirmation?id=${groupData.id}`);
     } catch (error: any) {
       console.error("Error creating group:", error);
       toast({
