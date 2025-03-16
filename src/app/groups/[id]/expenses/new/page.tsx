@@ -28,7 +28,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/src/lib/supabase";
 import { useParams, useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";

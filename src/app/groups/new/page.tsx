@@ -29,7 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { useForm, useFieldArray } from "react-hook-form";
 import * as z from "zod";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/src/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
