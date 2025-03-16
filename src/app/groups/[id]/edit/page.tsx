@@ -1,33 +1,34 @@
-"use client";
+w'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { useForm, useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { supabase } from "@/lib/supabase";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Loader2, PlusIcon, TrashIcon } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { useTranslations } from "next-intl";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { supabase } from '@/lib/supabase';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Loader2, PlusIcon, TrashIcon, CopyIcon, ShareIcon } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
+import { useTranslations } from 'next-intl';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function EditGroup() {
-  const t = useTranslations("groupEdit");
+  const t = useTranslations('groupEdit');
   const router = useRouter();
   const params = useParams();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   const formSchema = z.object({
-    groupName: z.string().min(1, t("groupNameRequired")),
+    groupName: z.string().min(1, t('groupNameRequired')),
     members: z.array(
       z.object({
         id: z.string().optional(),
-        name: z.string().min(1, t("memberNameRequired")),
+        name: z.string().min(1, t('memberNameRequired')),
       })
     ),
   });
@@ -37,29 +38,25 @@ export default function EditGroup() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      groupName: "",
-      members: [{ name: "" }],
+      groupName: '',
+      members: [{ name: '' }],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "members",
+    name: 'members',
   });
 
   useEffect(() => {
     async function fetchGroupData() {
-      const { data: group, error: groupError } = await supabase
-        .from("groups")
-        .select("name, members (id, name)")
-        .eq("id", params.id)
-        .single();
+      const { data: group, error: groupError } = await supabase.from('groups').select('name, members (id, name)').eq('id', params.id).single();
 
       if (groupError) {
         toast({
-          title: t("error"),
+          title: t('error'),
           description: groupError.message,
-          variant: "destructive",
+          variant: 'destructive',
         });
         return;
       }
@@ -77,18 +74,11 @@ export default function EditGroup() {
 
   async function onSubmit(values: FormValues) {
     try {
-
-      const { error: groupError } = await supabase
-        .from("groups")
-        .update({ name: values.groupName })
-        .eq("id", params.id);
+      const { error: groupError } = await supabase.from('groups').update({ name: values.groupName }).eq('id', params.id);
 
       if (groupError) throw groupError;
 
-      const { error: deleteError } = await supabase
-        .from("members")
-        .delete()
-        .eq("group_id", params.id);
+      const { error: deleteError } = await supabase.from('members').delete().eq('group_id', params.id);
 
       if (deleteError) throw deleteError;
 
@@ -97,27 +87,65 @@ export default function EditGroup() {
         group_id: params.id,
       }));
 
-      const { error: membersError } = await supabase
-        .from("members")
-        .insert(membersToInsert);
+      const { error: membersError } = await supabase.from('members').insert(membersToInsert);
 
       if (membersError) throw membersError;
 
       toast({
-        title: t("success"),
-        description: t("groupUpdated"),
+        title: t('success'),
+        description: t('groupUpdated'),
       });
 
       router.push(`/groups/${params.id}`);
     } catch (error: any) {
       toast({
-        title: t("error"),
-        description: error.message || t("failedToUpdateGroup"),
-        variant: "destructive",
+        title: t('error'),
+        description: error.message || t('failedToUpdateGroup'),
+        variant: 'destructive',
       });
     } finally {
     }
   }
+
+  const groupUrl = `${window.location.origin}/groups/${params.id}`;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(groupUrl);
+      setCopied(true);
+      toast({
+        title: 'Success!',
+        description: 'Group URL copied to clipboard',
+      });
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: 'Failed to copy URL',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Join my FairSplit group',
+          text: 'Join my expense sharing group on FairSplit',
+          url: groupUrl,
+        });
+        toast({
+          title: 'Success!',
+          description: 'Group URL shared successfully',
+        });
+      } else {
+        throw new Error('Web Share API not supported');
+      }
+    } catch (err) {
+      handleCopy();
+    }
+  };
 
   if (loading) {
     return (
@@ -125,7 +153,7 @@ export default function EditGroup() {
         <div className="container max-w-2xl mx-auto px-4">
           <Card className="bg-white shadow-lg shadow-primary/5">
             <CardHeader>
-              <CardTitle className="text-2xl">{t("editGroup")}</CardTitle>
+              <CardTitle className="text-2xl">{t('editGroup')}</CardTitle>
             </CardHeader>
             <CardContent>
               <Skeleton className="h-10 mb-4" />
@@ -143,9 +171,21 @@ export default function EditGroup() {
       <div className="container max-w-2xl mx-auto px-4">
         <Card className="bg-white shadow-lg shadow-primary/5">
           <CardHeader>
-            <CardTitle className="text-2xl">{t("editGroup")}</CardTitle>
+            <CardTitle className="text-2xl">{t('editGroup')}</CardTitle>
           </CardHeader>
           <CardContent>
+            <div className="flex flex-col gap-2 mt-4">
+              <div className="text-sm font-medium">{t('shareWithFriends')}</div>
+              <div className="flex gap-2 mb-4">
+                <Input value={groupUrl} readOnly className="font-mono text-sm" onClick={(e) => e.currentTarget.select()} />
+                <Button variant="outline" size="icon" onClick={handleCopy} className="shrink-0">
+                  <CopyIcon className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="icon" onClick={handleShare} className="shrink-0">
+                  <ShareIcon className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
@@ -153,9 +193,9 @@ export default function EditGroup() {
                   name="groupName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("groupName")}</FormLabel>
+                      <FormLabel>{t('groupName')}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t("groupNamePlaceholder")} {...field} />
+                        <Input placeholder={t('groupNamePlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -164,15 +204,10 @@ export default function EditGroup() {
 
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <FormLabel>{t("members")}</FormLabel>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => append({ name: "" })}
-                    >
+                    <FormLabel>{t('members')}</FormLabel>
+                    <Button type="button" variant="outline" size="sm" onClick={() => append({ name: '' })}>
                       <PlusIcon className="h-4 w-4 mr-2" />
-                      {t("addMember")}
+                      {t('addMember')}
                     </Button>
                   </div>
                   {fields.map((field, index) => (
@@ -183,23 +218,14 @@ export default function EditGroup() {
                         render={({ field }) => (
                           <FormItem className="flex-1">
                             <FormControl>
-                              <Input
-                                placeholder={t("memberPlaceholder", { number: index + 1 })}
-                                {...field}
-                              />
+                              <Input placeholder={t('memberPlaceholder', { number: index + 1 })} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                       {index > 0 && (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon"
-                          className="shrink-0"
-                          onClick={() => remove(index)}
-                        >
+                        <Button type="button" variant="outline" size="icon" className="shrink-0" onClick={() => remove(index)}>
                           <TrashIcon className="h-4 w-4" />
                         </Button>
                       )}
@@ -208,7 +234,7 @@ export default function EditGroup() {
                 </div>
 
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {t("saveChanges")}
+                  {t('saveChanges')}
                 </Button>
               </form>
             </Form>
