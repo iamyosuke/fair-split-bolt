@@ -20,9 +20,9 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {
   const locale = await getLocale();
-
+  const messages = await getMessages();
     return (
-        <NextIntlClientProvider >
+        <NextIntlClientProvider locale={locale} messages={messages}>
             <html lang={locale} className="light" style={{ colorScheme: "light" }}>
                 <body className={inter.className}>
                     <Header />
