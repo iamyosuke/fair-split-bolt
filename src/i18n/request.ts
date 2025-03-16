@@ -4,16 +4,16 @@ import { cookies } from 'next/headers';
 const locales = ['en', 'ja'];
 
 export default getRequestConfig(async () => {
-  let locale;
+  let locale = "en";
   try {
     const cookieStore = cookies();
-    locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
+    locale = cookieStore.get("NEXT_LOCALE")?.value || "en";
   } catch (error) {
     console.log(error);
     locale = 'en';
   }
   return {
-    messages: (await import(`../../messages/${locale}.json`)).default,
+    messages: (await import(`./messages/${locale}.json`)).default,
     locale: locale,
     timeZone: 'Asia/Tokyo'
   };
