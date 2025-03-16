@@ -98,5 +98,12 @@
     "expenseAdded": "経費が正常に追加されました。",
     "error": "エラー",
     "failedToAddExpense": "経費の追加に失敗しました"
+  },
+  "groupDetails": {
+    "addExpense": "経費を追加",
+    "summary": "概要",
+    "paid": "支払った",
+    "owes": "借りている",
+    "balance": "残高"
   }
 }

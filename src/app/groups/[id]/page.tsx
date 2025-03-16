@@ -7,6 +7,7 @@ import { formatCurrency } from "@/lib/utils";
 import { ExpenseList } from "@/components/expense-list";
 import { SettlementSummary } from "@/components/settlement-summary";
 import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -61,7 +62,7 @@ export default async function GroupPage({
 }: {
   params: { id: string };
 }) {
-  const t = useTranslations("groupDetails");
+  const t = await getTranslations("groupDetails");
   const group = await getGroupData(params.id);
 
   // Calculate totals for each member
