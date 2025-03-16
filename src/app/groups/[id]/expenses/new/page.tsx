@@ -1,52 +1,39 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { supabase } from "@/lib/supabase";
-import { useParams, useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
-import { useEffect, useState } from "react";
-import { CameraIcon, UploadIcon } from "lucide-react";
-
-const formSchema = z.object({
-  description: z.string().min(1, "Description is required"),
-  amount: z.string().min(1, "Amount is required").regex(/^\d+(\.\d{0,2})?$/, "Invalid amount"),
-  payerId: z.string().min(1, "Payer is required"),
-  participants: z.array(z.string()).min(1, "At least one participant is required"),
-});
-
-type Member = {
-  id: string;
-  name: string;
-};
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { supabase } from '@/lib/supabase';
+import { useParams, useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
+import { useEffect, useState } from 'react';
+import { CameraIcon, UploadIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function NewExpense() {
+  const t = useTranslations('expense');
+
+  const formSchema = z.object({
+    description: z.string().min(1, t('descriptionRequired')),
+    amount: z
+      .string()
+      .min(1, t('amountRequired'))
+      .regex(/^\d+(\.\d{0,2})?$/, t('invalidAmount')),
+    payerId: z.string().min(1, t('payerRequired')),
+    participants: z.array(z.string()).min(1, t('participantRequired')),
+  });
+
+  type Member = {
+    id: string;
+    name: string;
+  };
+
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
@@ -55,39 +42,38 @@ export default function NewExpense() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: "",
-      amount: "",
-      payerId: "",
+      description: '',
+      amount: '',
+      payerId: '',
       participants: [],
     },
   });
 
   useEffect(() => {
     async function fetchMembers() {
-      const { data, error } = await supabase
-        .from("members")
-        .select("id, name")
-        .eq("group_id", params.id);
+      const { data, error } = await supabase.from('members').select('id, name').eq('group_id', params.id);
 
       if (error) {
         toast({
-          title: "Error",
-          description: "Failed to load group members",
-          variant: "destructive",
+          title: t('error'),
+          description: t('failedToAddExpense'),
+          variant: 'destructive',
         });
         return;
       }
 
-      setMembers(data);
-      // Set all members as participants by default
-      form.setValue(
-        "participants",
-        data.map((member) => member.id)
-      );
+      if (data) {
+        setMembers(data);
+        // Set all members as participants by default
+        form.setValue(
+          'participants',
+          data.map((member) => member.id)
+        );
+      }
     }
 
     fetchMembers();
-  }, [params.id, form, toast]);
+  }, [params.id, form, toast, t]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -96,7 +82,7 @@ export default function NewExpense() {
 
       // Create expense
       const { data: expenseData, error: expenseError } = await supabase
-        .from("expenses")
+        .from('expenses')
         .insert({
           group_id: params.id,
           description: values.description,
@@ -115,53 +101,49 @@ export default function NewExpense() {
         share_amount: shareAmount,
       }));
 
-      const { error: participantsError } = await supabase
-        .from("expense_participants")
-        .insert(participantsToInsert);
+      const { error: participantsError } = await supabase.from('expense_participants').insert(participantsToInsert);
 
       if (participantsError) throw participantsError;
 
       toast({
-        title: "Success!",
-        description: "Expense added successfully.",
+        title: t('success'),
+        description: t('expenseAdded'),
       });
 
       router.push(`/groups/${params.id}`);
       router.refresh();
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message || "Failed to add expense",
-        variant: "destructive",
+        title: t('error'),
+        description: error.message || t('failedToAddExpense'),
+        variant: 'destructive',
       });
     }
   }
 
   return (
-    <div className="min-h-screen bg-white py-12">
-      <div className="container max-w-2xl mx-auto px-4">
+    <div className={t('minHScreenBgWhitePy12')}>
+      <div className={t('containerMaxW2xlMxAutoPx4')}>
         <Card>
           <CardHeader>
-            <CardTitle>Add New Expense</CardTitle>
-            <CardDescription>
-              Enter expense details or scan a receipt
-            </CardDescription>
+            <CardTitle>{t('addNewExpense')}</CardTitle>
+            <CardDescription>{t('enterDetailsOrScanReceipt')}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex justify-center mb-8 space-x-4">
+            <div className={t('flexJustifyCenterMb8SpaceX4')}>
               <Button
                 variant="outline"
-                className="w-40 h-40 flex flex-col items-center justify-center space-y-2"
+                className={t('w40H40FlexFlexColItemsCenterJustifyCenterSpaceY2')}
                 onClick={() => {
                   // TODO: Implement camera functionality
                   toast({
-                    title: "Coming Soon",
-                    description: "Camera functionality will be available soon!",
+                    title: t('comingSoon'),
+                    description: t('cameraFunctionality'),
                   });
                 }}
               >
                 <CameraIcon className="h-8 w-8" />
-                <span>Take Photo</span>
+                <span>{t('takePhoto')}</span>
               </Button>
               <Button
                 variant="outline"
@@ -169,13 +151,13 @@ export default function NewExpense() {
                 onClick={() => {
                   // TODO: Implement upload functionality
                   toast({
-                    title: "Coming Soon",
-                    description: "Upload functionality will be available soon!",
+                    title: t('comingSoon'),
+                    description: t('uploadFunctionality'),
                   });
                 }}
               >
                 <UploadIcon className="h-8 w-8" />
-                <span>Upload Receipt</span>
+                <span>{t('uploadReceipt')}</span>
               </Button>
             </div>
 
@@ -186,9 +168,9 @@ export default function NewExpense() {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>{t('description')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Dinner" {...field} />
+                        <Input placeholder={t('egDinner')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -200,14 +182,9 @@ export default function NewExpense() {
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Amount</FormLabel>
+                      <FormLabel>{t('amount')}</FormLabel>
                       <FormControl>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          placeholder="0.00"
-                          {...field}
-                        />
+                        <Input type="number" step="0.01" placeholder={t('zeroZero')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -219,14 +196,11 @@ export default function NewExpense() {
                   name="payerId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Paid by</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+                      <FormLabel>{t('paidBy')}</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select who paid" />
+                            <SelectValue placeholder={t('selectWhoPaid')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -247,7 +221,7 @@ export default function NewExpense() {
                   name="participants"
                   render={() => (
                     <FormItem>
-                      <FormLabel>Split between</FormLabel>
+                      <FormLabel>{t('splitBetween')}</FormLabel>
                       <div className="grid grid-cols-2 gap-4">
                         {members.map((member) => (
                           <FormField
@@ -261,16 +235,12 @@ export default function NewExpense() {
                                     checked={field.value?.includes(member.id)}
                                     onCheckedChange={(checked) => {
                                       const current = field.value || [];
-                                      const updated = checked
-                                        ? [...current, member.id]
-                                        : current.filter((id) => id !== member.id);
+                                      const updated = checked ? [...current, member.id] : current.filter((id) => id !== member.id);
                                       field.onChange(updated);
                                     }}
                                   />
                                 </FormControl>
-                                <FormLabel className="font-normal">
-                                  {member.name}
-                                </FormLabel>
+                                <FormLabel className="font-normal">{member.name}</FormLabel>
                               </FormItem>
                             )}
                           />
@@ -282,7 +252,7 @@ export default function NewExpense() {
                 />
 
                 <Button type="submit" className="w-full">
-                  Add Expense
+                  {t('addNewExpense')}
                 </Button>
               </form>
             </Form>

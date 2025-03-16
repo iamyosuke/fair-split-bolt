@@ -32,6 +32,7 @@ import * as z from "zod";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { useTranslations } from "next-intl";
 
 const currencies = [
   { value: "USD", label: "US Dollar ($)" },
@@ -61,6 +62,7 @@ const defaultValues: FormValues = {
 };
 
 export default function NewGroup() {
+  const t = useTranslations("groupCreation.form");
   const router = useRouter();
   const { toast } = useToast();
 
@@ -102,8 +104,8 @@ export default function NewGroup() {
       if (membersError) throw membersError;
 
       toast({
-        title: "Success!",
-        description: "Group created successfully.",
+        title: t("success.title"),
+        description: t("success.description"),
       });
 
       // Redirect to confirmation page with group ID
@@ -111,8 +113,8 @@ export default function NewGroup() {
     } catch (error: any) {
       console.log("Error creating group:", error);
       toast({
-        title: "Error",
-        description: error.message || "Failed to create group. Please try again.",
+        title: t("error"),
+        description: error.message || t("failedToCreateGroup"),
         variant: "destructive",
       });
     }
@@ -123,9 +125,9 @@ export default function NewGroup() {
       <div className="container max-w-2xl mx-auto px-4">
         <Card className="bg-white shadow-lg shadow-primary/5">
           <CardHeader>
-            <CardTitle className="text-2xl">Create New Group</CardTitle>
+            <CardTitle className="text-2xl">{t("groupName.label")}</CardTitle>
             <CardDescription>
-              Start splitting expenses with your friends
+              {t("description")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -136,9 +138,9 @@ export default function NewGroup() {
                   name="groupName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Group Name</FormLabel>
+                      <FormLabel>{t("groupName.label")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Trip to Paris" {...field} />
+                        <Input placeholder={t("groupName.placeholder")} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -150,14 +152,14 @@ export default function NewGroup() {
                   name="currency"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Currency</FormLabel>
+                      <FormLabel>{t("currency.label")}</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a currency" />
+                            <SelectValue placeholder={t("currency.placeholder")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -178,7 +180,7 @@ export default function NewGroup() {
 
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <FormLabel>Members</FormLabel>
+                    <FormLabel>{t("members.label")}</FormLabel>
                     <Button
                       type="button"
                       variant="outline"
@@ -186,7 +188,7 @@ export default function NewGroup() {
                       onClick={() => append({ name: "" })}
                     >
                       <PlusIcon className="h-4 w-4 mr-2" />
-                      Add Member
+                      {t("members.addButton")}
                     </Button>
                   </div>
                   {fields.map((field, index) => (
@@ -198,7 +200,7 @@ export default function NewGroup() {
                           <FormItem className="flex-1">
                             <FormControl>
                               <Input
-                                placeholder={`Member ${index + 1}`}
+                                placeholder={t("members.placeholder", { number: index + 1 })}
                                 {...field}
                               />
                             </FormControl>
@@ -222,7 +224,7 @@ export default function NewGroup() {
                 </div>
 
                 <Button type="submit" className="w-full">
-                  Create Group
+                  {t("createGroup")}
                 </Button>
               </form>
             </Form>

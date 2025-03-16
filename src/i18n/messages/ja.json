@@ -2,12 +2,12 @@
   "common": {
     "appName": "FairSplit",
     "tagline": {
-      "part1": "経費を分割、",
-      "part2": "友情は分割しない"
+      "part1": "経費を分割し、",
+      "part2": "友情を分割しない"
     },
-    "description": "共有経費を管理するスマートな方法。ルームメイト、旅行、グループに最適。AIレシートスキャン搭載。",
+    "description": "共有経費を管理する最も賢い方法。ルームメイト、旅行、グループに最適。AIレシートスキャン機能搭載。",
     "buttons": {
-      "startSplitting": "始める",
+      "startSplitting": "分割を開始",
       "createGroup": "グループを作成",
       "continue": "続ける",
       "copy": "コピー",
@@ -17,40 +17,40 @@
   "features": {
     "scanning": {
       "title": "スマートレシートスキャン",
-      "description": "レシートを撮影するだけで、AIが処理します"
+      "description": "レシートの写真を撮るだけでAIが処理します"
     },
     "splitting": {
-      "title": "インテリジェントな分割",
-      "description": "最も公平な経費分割方法を自動計算"
+      "title": "インテリジェント分割",
+      "description": "経費を最も公平に分割する方法を自動的に計算します"
     },
     "currencies": {
       "title": "複数通貨対応",
-      "description": "主要通貨のサポートとリアルタイム換算"
+      "description": "主要な通貨すべてに対応し、リアルタイムで換算します"
     }
   },
   "stats": {
     "users": {
-      "value": "100万+",
+      "value": "100万人以上",
       "label": "アクティブユーザー"
     },
     "expenses": {
-      "value": "5億円+",
+      "value": "5億ドル以上",
       "label": "追跡された経費"
     },
     "countries": {
-      "value": "190+",
-      "label": "対応国"
+      "value": "190以上",
+      "label": "国"
     }
   },
   "cta": {
-    "title": "始めましょう！",
-    "description": "数百万人のユーザーが信頼するFairSplitで経費を共有",
+    "title": "始める準備はできましたか？",
+    "description": "FairSplitを信頼する何百万ものユーザーに参加しましょう",
     "button": "最初のグループを作成"
   },
   "groupCreation": {
     "success": {
-      "title": "グループを作成しました！",
-      "description": "このリンクを友達と共有してグループに招待しましょう"
+      "title": "グループが作成されました！",
+      "description": "このリンクを友達と共有して、グループに招待しましょう"
     },
     "form": {
       "groupName": {
@@ -65,7 +65,38 @@
         "label": "メンバー",
         "addButton": "メンバーを追加",
         "placeholder": "メンバー {number}"
-      }
+      },
+      "description": "友達と経費を分割し始めましょう"
     }
+  },
+  "auth": {
+    "welcome": "FairSplitへようこそ",
+    "signInOrCreateAccount": "サインインまたはアカウントを作成して経費の分割を開始しましょう",
+    "email": "メール",
+    "password": "パスワード",
+    "enterEmail": "メールアドレスを入力",
+    "enterPassword": "パスワードを入力",
+    "signIn": "サインイン",
+    "signUp": "サインアップ",
+    "success": "成功！",
+    "accountCreated": "アカウントが正常に作成されました。サインインできます。",
+    "error": "エラー"
+  },
+  "expense": {
+    "addNewExpense": "新しい経費を追加",
+    "enterDetailsOrScanReceipt": "経費の詳細を入力するか、レシートをスキャンしてください",
+    "description": "説明",
+    "amount": "金額",
+    "paidBy": "支払者",
+    "splitBetween": "分割対象",
+    "takePhoto": "写真を撮る",
+    "uploadReceipt": "レシートをアップロード",
+    "comingSoon": "近日公開",
+    "cameraFunctionality": "カメラ機能は近日公開予定です！",
+    "uploadFunctionality": "アップロード機能は近日公開予定です！",
+    "success": "成功！",
+    "expenseAdded": "経費が正常に追加されました。",
+    "error": "エラー",
+    "failedToAddExpense": "経費の追加に失敗しました"
   }
 }

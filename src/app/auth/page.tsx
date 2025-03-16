@@ -14,8 +14,10 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { useTranslations } from "next-intl";
 
 export default function AuthPage() {
+  const t = useTranslations();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,12 +37,12 @@ export default function AuthPage() {
       if (error) throw error;
 
       toast({
-        title: "Success!",
-        description: "Account created successfully. You can now sign in.",
+        title: t("auth.success"),
+        description: t("auth.accountCreated"),
       });
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t("auth.error"),
         description: error.message,
         variant: "destructive",
       });
@@ -65,7 +67,7 @@ export default function AuthPage() {
       router.refresh();
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t("auth.error"),
         description: error.message,
         variant: "destructive",
       });
@@ -79,32 +81,32 @@ export default function AuthPage() {
       <div className="container max-w-md mx-auto px-4">
         <Card>
           <CardHeader>
-            <CardTitle>Welcome to FairSplit</CardTitle>
+            <CardTitle>{t("auth.welcome")}</CardTitle>
             <CardDescription>
-              Sign in or create an account to start splitting expenses
+              {t("auth.signInOrCreateAccount")}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("auth.email")}</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder={t("auth.enterEmail")}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("auth.password")}</Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder={t("auth.enterPassword")}
                   required
                 />
               </div>
@@ -115,7 +117,7 @@ export default function AuthPage() {
                   onClick={handleSignIn}
                   disabled={loading}
                 >
-                  Sign In
+                  {t("auth.signIn")}
                 </Button>
                 <Button
                   type="button"
@@ -124,7 +126,7 @@ export default function AuthPage() {
                   onClick={handleSignUp}
                   disabled={loading}
                 >
-                  Sign Up
+                  {t("auth.signUp")}
                 </Button>
               </div>
             </form>

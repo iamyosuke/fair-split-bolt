@@ -6,6 +6,7 @@ import Link from "next/link";
 import { formatCurrency } from "@/lib/utils";
 import { ExpenseList } from "@/components/expense-list";
 import { SettlementSummary } from "@/components/settlement-summary";
+import { useTranslations } from "next-intl";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -60,6 +61,7 @@ export default async function GroupPage({
 }: {
   params: { id: string };
 }) {
+  const t = useTranslations("groupDetails");
   const group = await getGroupData(params.id);
 
   // Calculate totals for each member
@@ -89,14 +91,14 @@ export default async function GroupPage({
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">{group.name}</h1>
           <Link href={`/groups/${params.id}/expenses/new`}>
-            <Button>Add Expense</Button>
+            <Button>{t("addExpense")}</Button>
           </Link>
         </div>
 
         <div className="grid gap-8">
           <Card>
             <CardHeader>
-              <CardTitle>Summary</CardTitle>
+              <CardTitle>{t("summary")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid gap-6">
@@ -109,13 +111,13 @@ export default async function GroupPage({
                       <div className="font-medium mb-2">{member.name}</div>
                       <div className="text-sm space-y-1">
                         <div>
-                          Paid: {formatCurrency(member.paid, group.currency)}
+                          {t("paid")}: {formatCurrency(member.paid, group.currency)}
                         </div>
                         <div>
-                          Owes: {formatCurrency(member.owes, group.currency)}
+                          {t("owes")}: {formatCurrency(member.owes, group.currency)}
                         </div>
                         <div className="font-medium">
-                          Balance:{" "}
+                          {t("balance")}:{" "}
                           {formatCurrency(
                             member.paid - member.owes,
                             group.currency

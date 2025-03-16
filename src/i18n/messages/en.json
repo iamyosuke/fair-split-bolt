@@ -65,7 +65,45 @@
         "label": "Members",
         "addButton": "Add Member",
         "placeholder": "Member {number}"
-      }
+      },
+      "description": "Start splitting expenses with your friends"
     }
+  },
+  "auth": {
+    "welcome": "Welcome to FairSplit",
+    "signInOrCreateAccount": "Sign in or create an account to start splitting expenses",
+    "email": "Email",
+    "password": "Password",
+    "enterEmail": "Enter your email",
+    "enterPassword": "Enter your password",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "success": "Success!",
+    "accountCreated": "Account created successfully. You can now sign in.",
+    "error": "Error"
+  },
+  "expense": {
+    "addNewExpense": "Add New Expense",
+    "enterDetailsOrScanReceipt": "Enter expense details or scan a receipt",
+    "description": "Description",
+    "amount": "Amount",
+    "paidBy": "Paid by",
+    "splitBetween": "Split between",
+    "takePhoto": "Take Photo",
+    "uploadReceipt": "Upload Receipt",
+    "comingSoon": "Coming Soon",
+    "cameraFunctionality": "Camera functionality will be available soon!",
+    "uploadFunctionality": "Upload functionality will be available soon!",
+    "success": "Success!",
+    "expenseAdded": "Expense added successfully.",
+    "error": "Error",
+    "failedToAddExpense": "Failed to add expense"
+  },
+  "groupDetails": {
+    "addExpense": "Add Expense",
+    "summary": "Summary",
+    "paid": "Paid",
+    "owes": "Owes",
+    "balance": "Balance"
   }
 }
