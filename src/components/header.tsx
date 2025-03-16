@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 
 export function Header() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const shouldShowCreateGroupButton = !pathname.includes("/groups/");
   const t = useTranslations("common");
 
   return (
@@ -21,7 +21,7 @@ export function Header() {
         </Link>
         <nav className="flex items-center space-x-4">
           <LanguageSwitcher />
-          {!isHome && (
+          {shouldShowCreateGroupButton && (
             <Link href="/groups/new">
               <Button>{t("buttons.createGroup")}</Button>
             </Link>

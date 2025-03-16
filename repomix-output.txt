@@ -172,6 +172,48 @@ Files
 ================================================================
 
 ================
+File: .bolt/ignore
+================
+components/ui/*
+hooks/use-toast.ts
+
+================
+File: src/components/CurrencySelect.tsx
+================
+import React from 'react';
+import { Currency } from '../types';
+
+interface CurrencySelectProps {
+  value: Currency;
+  onChange: (currency: Currency) => void;
+}
+
+const currencies: { value: Currency; label: string }[] = [
+  { value: 'USD', label: 'US Dollar ($)' },
+  { value: 'EUR', label: 'Euro (€)' },
+  { value: 'GBP', label: 'British Pound (£)' },
+  { value: 'AUD', label: 'Australian Dollar (A$)' },
+  { value: 'CAD', label: 'Canadian Dollar (C$)' },
+  { value: 'JPY', label: 'Japanese Yen (¥)' },
+];
+
+export function CurrencySelect({ value, onChange }: CurrencySelectProps) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value as Currency)}
+      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      {currencies.map((currency) => (
+        <option key={currency.value} value={currency.value}>
+          {currency.label}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+================
 File: src/memory-bank/activeContext.md
 ================
 # Active Context
@@ -286,287 +328,6 @@ File: src/memory-bank/techContext.md
 - Must be responsive and mobile-friendly
 
 ================
-File: src/.prettierrc
-================
-{
-  "tabWidth": 2,
-  "useTabs": false,
-  "singleQuote": true,
-  "semi": true,
-  "trailingComma": "es5",
-  "printWidth": 220
-}
-
-================
-File: .repomixignore
-================
-node_modules/
-.next/
-.history/*
-*.log
-
-================
-File: .bolt/ignore
-================
-components/ui/*
-hooks/use-toast.ts
-
-================
-File: src/components/CurrencySelect.tsx
-================
-import React from 'react';
-import { Currency } from '../types';
-
-interface CurrencySelectProps {
-  value: Currency;
-  onChange: (currency: Currency) => void;
-}
-
-const currencies: { value: Currency; label: string }[] = [
-  { value: 'USD', label: 'US Dollar ($)' },
-  { value: 'EUR', label: 'Euro (€)' },
-  { value: 'GBP', label: 'British Pound (£)' },
-  { value: 'AUD', label: 'Australian Dollar (A$)' },
-  { value: 'CAD', label: 'Canadian Dollar (C$)' },
-  { value: 'JPY', label: 'Japanese Yen (¥)' },
-];
-
-export function CurrencySelect({ value, onChange }: CurrencySelectProps) {
-  return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value as Currency)}
-      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      {currencies.map((currency) => (
-        <option key={currency.value} value={currency.value}>
-          {currency.label}
-        </option>
-      ))}
-    </select>
-  );
-}
-
-================
-File: src/i18n/messages/en.json
-================
-{
-  "common": {
-    "appName": "FairSplit",
-    "tagline": {
-      "part1": "Split Expenses,",
-      "part2": "Not Friendships"
-    },
-    "description": "The smartest way to manage shared expenses. Perfect for roommates, trips, and groups. Powered by AI receipt scanning.",
-    "buttons": {
-      "startSplitting": "Start Splitting",
-      "createGroup": "Create Group",
-      "continue": "Continue",
-      "copy": "Copy",
-      "share": "Share"
-    }
-  },
-  "features": {
-    "scanning": {
-      "title": "Smart Receipt Scanning",
-      "description": "Just snap a photo of your receipt and let AI do the work"
-    },
-    "splitting": {
-      "title": "Intelligent Splitting",
-      "description": "Automatically calculate the fairest way to split expenses"
-    },
-    "currencies": {
-      "title": "Multiple Currencies",
-      "description": "Support for all major currencies with real-time conversion"
-    }
-  },
-  "stats": {
-    "users": {
-      "value": "1M+",
-      "label": "Active Users"
-    },
-    "expenses": {
-      "value": "$500M+",
-      "label": "Expenses Tracked"
-    },
-    "countries": {
-      "value": "190+",
-      "label": "Countries"
-    }
-  },
-  "cta": {
-    "title": "Ready to Get Started?",
-    "description": "Join millions of users who trust FairSplit for their expense sharing",
-    "button": "Create Your First Group"
-  },
-  "groupCreation": {
-    "success": {
-      "title": "Group Created!",
-      "description": "Share this link with your friends to invite them to your group"
-    },
-    "form": {
-      "groupName": {
-        "label": "Group Name",
-        "placeholder": "e.g., Trip to Paris"
-      },
-      "currency": {
-        "label": "Currency",
-        "placeholder": "Select a currency"
-      },
-      "members": {
-        "label": "Members",
-        "addButton": "Add Member",
-        "placeholder": "Member {number}"
-      },
-      "description": "Start splitting expenses with your friends"
-    }
-  },
-  "auth": {
-    "welcome": "Welcome to FairSplit",
-    "signInOrCreateAccount": "Sign in or create an account to start splitting expenses",
-    "email": "Email",
-    "password": "Password",
-    "enterEmail": "Enter your email",
-    "enterPassword": "Enter your password",
-    "signIn": "Sign In",
-    "signUp": "Sign Up",
-    "success": "Success!",
-    "accountCreated": "Account created successfully. You can now sign in.",
-    "error": "Error"
-  },
-  "expense": {
-    "addNewExpense": "Add New Expense",
-    "enterDetailsOrScanReceipt": "Enter expense details or scan a receipt",
-    "description": "Description",
-    "amount": "Amount",
-    "paidBy": "Paid by",
-    "splitBetween": "Split between",
-    "takePhoto": "Take Photo",
-    "uploadReceipt": "Upload Receipt",
-    "comingSoon": "Coming Soon",
-    "cameraFunctionality": "Camera functionality will be available soon!",
-    "uploadFunctionality": "Upload functionality will be available soon!",
-    "success": "Success!",
-    "expenseAdded": "Expense added successfully.",
-    "error": "Error",
-    "failedToAddExpense": "Failed to add expense"
-  },
-  "groupDetails": {
-    "addExpense": "Add Expense",
-    "summary": "Summary",
-    "paid": "Paid",
-    "owes": "Owes",
-    "balance": "Balance"
-  }
-}
-
-================
-File: src/i18n/messages/ja.json
-================
-{
-  "common": {
-    "appName": "FairSplit",
-    "tagline": {
-      "part1": "経費を分割し、",
-      "part2": "友情を分割しない"
-    },
-    "description": "共有経費を管理する最も賢い方法。ルームメイト、旅行、グループに最適。AIレシートスキャン機能搭載。",
-    "buttons": {
-      "startSplitting": "分割を開始",
-      "createGroup": "グループを作成",
-      "continue": "続ける",
-      "copy": "コピー",
-      "share": "共有"
-    }
-  },
-  "features": {
-    "scanning": {
-      "title": "スマートレシートスキャン",
-      "description": "レシートの写真を撮るだけでAIが処理します"
-    },
-    "splitting": {
-      "title": "インテリジェント分割",
-      "description": "経費を最も公平に分割する方法を自動的に計算します"
-    },
-    "currencies": {
-      "title": "複数通貨対応",
-      "description": "主要な通貨すべてに対応し、リアルタイムで換算します"
-    }
-  },
-  "stats": {
-    "users": {
-      "value": "100万人以上",
-      "label": "アクティブユーザー"
-    },
-    "expenses": {
-      "value": "5億ドル以上",
-      "label": "追跡された経費"
-    },
-    "countries": {
-      "value": "190以上",
-      "label": "国"
-    }
-  },
-  "cta": {
-    "title": "始める準備はできましたか？",
-    "description": "FairSplitを信頼する何百万ものユーザーに参加しましょう",
-    "button": "最初のグループを作成"
-  },
-  "groupCreation": {
-    "success": {
-      "title": "グループが作成されました！",
-      "description": "このリンクを友達と共有して、グループに招待しましょう"
-    },
-    "form": {
-      "groupName": {
-        "label": "グループ名",
-        "placeholder": "例：パリ旅行"
-      },
-      "currency": {
-        "label": "通貨",
-        "placeholder": "通貨を選択"
-      },
-      "members": {
-        "label": "メンバー",
-        "addButton": "メンバーを追加",
-        "placeholder": "メンバー {number}"
-      },
-      "description": "友達と経費を分割し始めましょう"
-    }
-  },
-  "auth": {
-    "welcome": "FairSplitへようこそ",
-    "signInOrCreateAccount": "サインインまたはアカウントを作成して経費の分割を開始しましょう",
-    "email": "メール",
-    "password": "パスワード",
-    "enterEmail": "メールアドレスを入力",
-    "enterPassword": "パスワードを入力",
-    "signIn": "サインイン",
-    "signUp": "サインアップ",
-    "success": "成功！",
-    "accountCreated": "アカウントが正常に作成されました。サインインできます。",
-    "error": "エラー"
-  },
-  "expense": {
-    "addNewExpense": "新しい経費を追加",
-    "enterDetailsOrScanReceipt": "経費の詳細を入力するか、レシートをスキャンしてください",
-    "description": "説明",
-    "amount": "金額",
-    "paidBy": "支払者",
-    "splitBetween": "分割対象",
-    "takePhoto": "写真を撮る",
-    "uploadReceipt": "レシートをアップロード",
-    "comingSoon": "近日公開",
-    "cameraFunctionality": "カメラ機能は近日公開予定です！",
-    "uploadFunctionality": "アップロード機能は近日公開予定です！",
-    "success": "成功！",
-    "expenseAdded": "経費が正常に追加されました。",
-    "error": "エラー",
-    "failedToAddExpense": "経費の追加に失敗しました"
-  }
-}
-
-================
 File: src/store/groupStore.ts
 ================
 import { create } from 'zustand';
@@ -615,11 +376,31 @@ export interface Group {
 }
 
 ================
+File: src/.prettierrc
+================
+{
+  "tabWidth": 2,
+  "useTabs": false,
+  "singleQuote": true,
+  "semi": true,
+  "trailingComma": "es5",
+  "printWidth": 220
+}
+
+================
 File: .eslintrc.json
 ================
 {
   "extends": "next/core-web-vitals"
 }
+
+================
+File: .repomixignore
+================
+node_modules/
+.next/
+.history/*
+*.log
 
 ================
 File: components.json
@@ -5733,7 +5514,7 @@ import { useTranslations } from "next-intl";
 
 export function Header() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const shouldShowCreateGroupButton = !pathname.includes("/groups/");
   const t = useTranslations("common");
 
   return (
@@ -5745,7 +5526,7 @@ export function Header() {
         </Link>
         <nav className="flex items-center space-x-4">
           <LanguageSwitcher />
-          {!isHome && (
+          {shouldShowCreateGroupButton && (
             <Link href="/groups/new">
               <Button>{t("buttons.createGroup")}</Button>
             </Link>
@@ -6472,6 +6253,127 @@ module.exports = {
 };
 
 ================
+File: src/i18n/messages/en.json
+================
+{
+  "common": {
+    "appName": "FairSplit",
+    "tagline": {
+      "part1": "Split Expenses,",
+      "part2": "Not Friendships"
+    },
+    "description": "The smartest way to manage shared expenses. Perfect for roommates, trips, and groups. Powered by AI receipt scanning.",
+    "buttons": {
+      "startSplitting": "Start Splitting",
+      "createGroup": "Create Group",
+      "continue": "Continue",
+      "copy": "Copy",
+      "share": "Share"
+    }
+  },
+  "features": {
+    "scanning": {
+      "title": "Smart Receipt Scanning",
+      "description": "Just snap a photo of your receipt and let AI do the work"
+    },
+    "splitting": {
+      "title": "Intelligent Splitting",
+      "description": "Automatically calculate the fairest way to split expenses"
+    },
+    "currencies": {
+      "title": "Multiple Currencies",
+      "description": "Support for all major currencies with real-time conversion"
+    }
+  },
+  "stats": {
+    "users": {
+      "value": "1M+",
+      "label": "Active Users"
+    },
+    "expenses": {
+      "value": "$500M+",
+      "label": "Expenses Tracked"
+    },
+    "countries": {
+      "value": "190+",
+      "label": "Countries"
+    }
+  },
+  "cta": {
+    "title": "Ready to Get Started?",
+    "description": "Join millions of users who trust FairSplit for their expense sharing",
+    "button": "Create Your First Group"
+  },
+  "groupCreation": {
+    "success": {
+      "title": "Group Created!",
+      "description": "Share this link with your friends to invite them to your group"
+    },
+    "form": {
+      "groupName": {
+        "label": "Group Name",
+        "placeholder": "e.g., Trip to Paris"
+      },
+      "currency": {
+        "label": "Currency",
+        "placeholder": "Select a currency"
+      },
+      "members": {
+        "label": "Members",
+        "addButton": "Add Member",
+        "placeholder": "Member {number}"
+      },
+      "description": "Start splitting expenses with your friends"
+    }
+  },
+  "auth": {
+    "welcome": "Welcome to FairSplit",
+    "signInOrCreateAccount": "Sign in or create an account to start splitting expenses",
+    "email": "Email",
+    "password": "Password",
+    "enterEmail": "Enter your email",
+    "enterPassword": "Enter your password",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "success": "Success!",
+    "accountCreated": "Account created successfully. You can now sign in.",
+    "error": "Error"
+  },
+  "expense": {
+    "descriptionRequired": "Description is required",
+    "amountRequired": "Amount is required",
+    "invalidAmount": "Invalid amount",
+    "payerRequired": "Payer is required",
+    "participantRequired": "At least one participant is required",
+    "error": "Error",
+    "failedToAddExpense": "Failed to add expense",
+    "success": "Success",
+    "expenseAdded": "Expense added successfully",
+    "addNewExpense": "Add New Expense",
+    "enterDetailsOrScanReceipt": "Enter expense details or scan a receipt",
+    "comingSoon": "Coming Soon",
+    "cameraFunctionality": "Camera functionality will be available soon!",
+    "uploadFunctionality": "Upload functionality will be available soon!",
+    "takePhoto": "Take Photo",
+    "uploadReceipt": "Upload Receipt",
+    "description": "Description",
+    "egDinner": "e.g., Dinner",
+    "amount": "Amount",
+    "zeroZero": "0.00",
+    "paidBy": "Paid by",
+    "selectWhoPaid": "Select who paid",
+    "splitBetween": "Split between"
+  },
+  "groupDetails": {
+    "addExpense": "Add Expense",
+    "summary": "Summary",
+    "paid": "Paid",
+    "owes": "Owes",
+    "balance": "Balance"
+  }
+}
+
+================
 File: src/app/auth/page.tsx
 ================
 "use client";
@@ -6608,422 +6510,6 @@ export default function AuthPage() {
             </form>
           </CardContent>
         </Card>
-      </div>
-    </div>
-  );
-}
-
-================
-File: src/app/groups/[id]/expenses/new/page.tsx
-================
-'use client';
-
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { supabase } from '@/lib/supabase';
-import { useParams, useRouter } from 'next/navigation';
-import { useToast } from '@/components/ui/use-toast';
-import { useEffect, useState } from 'react';
-import { CameraIcon, UploadIcon } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-
-export default function NewExpense() {
-  const t = useTranslations('expense');
-
-  const formSchema = z.object({
-    description: z.string().min(1, t('descriptionRequired')),
-    amount: z
-      .string()
-      .min(1, t('amountRequired'))
-      .regex(/^\d+(\.\d{0,2})?$/, t('invalidAmount')),
-    payerId: z.string().min(1, t('payerRequired')),
-    participants: z.array(z.string()).min(1, t('participantRequired')),
-  });
-
-  type Member = {
-    id: string;
-    name: string;
-  };
-
-  const params = useParams();
-  const router = useRouter();
-  const { toast } = useToast();
-  const [members, setMembers] = useState<Member[]>([]);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      description: '',
-      amount: '',
-      payerId: '',
-      participants: [],
-    },
-  });
-
-  useEffect(() => {
-    async function fetchMembers() {
-      const { data, error } = await supabase.from('members').select('id, name').eq('group_id', params.id);
-
-      if (error) {
-        toast({
-          title: t('error'),
-          description: t('failedToAddExpense'),
-          variant: 'destructive',
-        });
-        return;
-      }
-
-      if (data) {
-        setMembers(data);
-        // Set all members as participants by default
-        form.setValue(
-          'participants',
-          data.map((member) => member.id)
-        );
-      }
-    }
-
-    fetchMembers();
-  }, [params.id, form, toast, t]);
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const amount = parseFloat(values.amount);
-      const shareAmount = amount / values.participants.length;
-
-      // Create expense
-      const { data: expenseData, error: expenseError } = await supabase
-        .from('expenses')
-        .insert({
-          group_id: params.id,
-          description: values.description,
-          amount,
-          payer_id: values.payerId,
-        })
-        .select()
-        .single();
-
-      if (expenseError) throw expenseError;
-
-      // Create expense participants
-      const participantsToInsert = values.participants.map((participantId) => ({
-        expense_id: expenseData.id,
-        member_id: participantId,
-        share_amount: shareAmount,
-      }));
-
-      const { error: participantsError } = await supabase.from('expense_participants').insert(participantsToInsert);
-
-      if (participantsError) throw participantsError;
-
-      toast({
-        title: t('success'),
-        description: t('expenseAdded'),
-      });
-
-      router.push(`/groups/${params.id}`);
-      router.refresh();
-    } catch (error: any) {
-      toast({
-        title: t('error'),
-        description: error.message || t('failedToAddExpense'),
-        variant: 'destructive',
-      });
-    }
-  }
-
-  return (
-    <div className={t('minHScreenBgWhitePy12')}>
-      <div className={t('containerMaxW2xlMxAutoPx4')}>
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('addNewExpense')}</CardTitle>
-            <CardDescription>{t('enterDetailsOrScanReceipt')}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className={t('flexJustifyCenterMb8SpaceX4')}>
-              <Button
-                variant="outline"
-                className={t('w40H40FlexFlexColItemsCenterJustifyCenterSpaceY2')}
-                onClick={() => {
-                  // TODO: Implement camera functionality
-                  toast({
-                    title: t('comingSoon'),
-                    description: t('cameraFunctionality'),
-                  });
-                }}
-              >
-                <CameraIcon className="h-8 w-8" />
-                <span>{t('takePhoto')}</span>
-              </Button>
-              <Button
-                variant="outline"
-                className="w-40 h-40 flex flex-col items-center justify-center space-y-2"
-                onClick={() => {
-                  // TODO: Implement upload functionality
-                  toast({
-                    title: t('comingSoon'),
-                    description: t('uploadFunctionality'),
-                  });
-                }}
-              >
-                <UploadIcon className="h-8 w-8" />
-                <span>{t('uploadReceipt')}</span>
-              </Button>
-            </div>
-
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('description')}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t('egDinner')} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="amount"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('amount')}</FormLabel>
-                      <FormControl>
-                        <Input type="number" step="0.01" placeholder={t('zeroZero')} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="payerId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('paidBy')}</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t('selectWhoPaid')} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {members.map((member) => (
-                            <SelectItem key={member.id} value={member.id}>
-                              {member.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="participants"
-                  render={() => (
-                    <FormItem>
-                      <FormLabel>{t('splitBetween')}</FormLabel>
-                      <div className="grid grid-cols-2 gap-4">
-                        {members.map((member) => (
-                          <FormField
-                            key={member.id}
-                            control={form.control}
-                            name="participants"
-                            render={({ field }) => (
-                              <FormItem className="flex items-center space-x-2">
-                                <FormControl>
-                                  <Checkbox
-                                    checked={field.value?.includes(member.id)}
-                                    onCheckedChange={(checked) => {
-                                      const current = field.value || [];
-                                      const updated = checked ? [...current, member.id] : current.filter((id) => id !== member.id);
-                                      field.onChange(updated);
-                                    }}
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">{member.name}</FormLabel>
-                              </FormItem>
-                            )}
-                          />
-                        ))}
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button type="submit" className="w-full">
-                  {t('addNewExpense')}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-}
-
-================
-File: src/app/groups/[id]/page.tsx
-================
-import { supabase } from "@/lib/supabase";
-import { notFound } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { formatCurrency } from "@/lib/utils";
-import { ExpenseList } from "@/components/expense-list";
-import { SettlementSummary } from "@/components/settlement-summary";
-import { useTranslations } from "next-intl";
-
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
-async function getGroupData(id: string) {
-  // First, get the group and its members
-  const { data: group, error: groupError } = await supabase
-    .from("groups")
-    .select(`
-      *,
-      members (
-        id,
-        name
-      )
-    `)
-    .eq("id", id)
-    .single();
-
-  if (groupError) throw groupError;
-  if (!group) notFound();
-
-  // Then, get the expenses with their payers and participants
-  const { data: expenses, error: expensesError } = await supabase
-    .from("expenses")
-    .select(`
-      id,
-      description,
-      amount,
-      created_at,
-      payer_id,
-      members!expenses_payer_id_fkey (
-        id,
-        name
-      ),
-      expense_participants (
-        member_id,
-        share_amount
-      )
-    `)
-    .eq("group_id", id);
-
-  if (expensesError) throw expensesError;
-
-  return {
-    ...group,
-    expenses: expenses || [],
-  };
-}
-
-export default async function GroupPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const t = useTranslations("groupDetails");
-  const group = await getGroupData(params.id);
-
-  // Calculate totals for each member
-  const memberTotals = group.members.reduce((acc: any, member: any) => {
-    acc[member.id] = {
-      name: member.name,
-      paid: 0,
-      owes: 0,
-    };
-    return acc;
-  }, {});
-
-  // Calculate what each member paid and owes
-  group.expenses.forEach((expense: any) => {
-    // Add to paid amount for payer
-    memberTotals[expense.payer_id].paid += expense.amount;
-
-    // Calculate shares
-    expense.expense_participants.forEach((participant: any) => {
-      memberTotals[participant.member_id].owes += participant.share_amount;
-    });
-  });
-
-  return (
-    <div className="min-h-screen bg-white py-12">
-      <div className="container max-w-4xl mx-auto px-4">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">{group.name}</h1>
-          <Link href={`/groups/${params.id}/expenses/new`}>
-            <Button>{t("addExpense")}</Button>
-          </Link>
-        </div>
-
-        <div className="grid gap-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("summary")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-6">
-                <div className="grid md:grid-cols-3 gap-4">
-                  {Object.values(memberTotals).map((member: any) => (
-                    <div
-                      key={member.name}
-                      className="bg-secondary/50 rounded-lg p-4"
-                    >
-                      <div className="font-medium mb-2">{member.name}</div>
-                      <div className="text-sm space-y-1">
-                        <div>
-                          {t("paid")}: {formatCurrency(member.paid, group.currency)}
-                        </div>
-                        <div>
-                          {t("owes")}: {formatCurrency(member.owes, group.currency)}
-                        </div>
-                        <div className="font-medium">
-                          {t("balance")}:{" "}
-                          {formatCurrency(
-                            member.paid - member.owes,
-                            group.currency
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <SettlementSummary
-                  memberTotals={memberTotals}
-                  currency={group.currency}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <ExpenseList expenses={group.expenses} currency={group.currency} />
-        </div>
       </div>
     </div>
   );
@@ -7270,6 +6756,127 @@ export default function NewGroup() {
 }
 
 ================
+File: src/i18n/messages/ja.json
+================
+{
+  "common": {
+    "appName": "FairSplit",
+    "tagline": {
+      "part1": "経費を分割し、",
+      "part2": "友情を分割しない"
+    },
+    "description": "共有経費を管理する最も賢い方法。ルームメイト、旅行、グループに最適。AIレシートスキャン機能搭載。",
+    "buttons": {
+      "startSplitting": "分割を開始",
+      "createGroup": "グループを作成",
+      "continue": "続ける",
+      "copy": "コピー",
+      "share": "共有"
+    }
+  },
+  "features": {
+    "scanning": {
+      "title": "スマートレシートスキャン",
+      "description": "レシートの写真を撮るだけでAIが処理します"
+    },
+    "splitting": {
+      "title": "インテリジェント分割",
+      "description": "経費を最も公平に分割する方法を自動的に計算します"
+    },
+    "currencies": {
+      "title": "複数通貨対応",
+      "description": "主要な通貨すべてに対応し、リアルタイムで換算します"
+    }
+  },
+  "stats": {
+    "users": {
+      "value": "100万人以上",
+      "label": "アクティブユーザー"
+    },
+    "expenses": {
+      "value": "5億ドル以上",
+      "label": "追跡された経費"
+    },
+    "countries": {
+      "value": "190以上",
+      "label": "国"
+    }
+  },
+  "cta": {
+    "title": "始める準備はできましたか？",
+    "description": "FairSplitを信頼する何百万ものユーザーに参加しましょう",
+    "button": "最初のグループを作成"
+  },
+  "groupCreation": {
+    "success": {
+      "title": "グループが作成されました！",
+      "description": "このリンクを友達と共有して、グループに招待しましょう"
+    },
+    "form": {
+      "groupName": {
+        "label": "グループ名",
+        "placeholder": "例：パリ旅行"
+      },
+      "currency": {
+        "label": "通貨",
+        "placeholder": "通貨を選択"
+      },
+      "members": {
+        "label": "メンバー",
+        "addButton": "メンバーを追加",
+        "placeholder": "メンバー {number}"
+      },
+      "description": "友達と経費を分割し始めましょう"
+    }
+  },
+  "auth": {
+    "welcome": "FairSplitへようこそ",
+    "signInOrCreateAccount": "サインインまたはアカウントを作成して経費の分割を開始しましょう",
+    "email": "メール",
+    "password": "パスワード",
+    "enterEmail": "メールアドレスを入力",
+    "enterPassword": "パスワードを入力",
+    "signIn": "サインイン",
+    "signUp": "サインアップ",
+    "success": "成功！",
+    "accountCreated": "アカウントが正常に作成されました。サインインできます。",
+    "error": "エラー"
+  },
+  "expense": {
+    "descriptionRequired": "説明が必要です",
+    "amountRequired": "金額が必要です",
+    "invalidAmount": "無効な金額です",
+    "payerRequired": "支払者が必要です",
+    "participantRequired": "少なくとも1人の参加者が必要です",
+    "error": "エラー",
+    "failedToAddExpense": "費用の追加に失敗しました",
+    "success": "成功",
+    "expenseAdded": "費用が追加されました",
+    "addNewExpense": "新しい費用を追加",
+    "enterDetailsOrScanReceipt": "詳細を入力するか、レシートをスキャンしてください",
+    "comingSoon": "近日公開",
+    "cameraFunctionality": "カメラ機能は近日公開予定です！",
+    "uploadFunctionality": "アップロード機能は近日公開予定です！",
+    "takePhoto": "写真を撮る",
+    "uploadReceipt": "レシートをアップロード",
+    "description": "説明",
+    "egDinner": "例：夕食",
+    "amount": "金額",
+    "zeroZero": "0.00",
+    "paidBy": "支払者",
+    "selectWhoPaid": "支払者を選択",
+    "splitBetween": "分割"
+  },
+  "groupDetails": {
+    "addExpense": "経費を追加",
+    "summary": "概要",
+    "paid": "支払った",
+    "owes": "借りている",
+    "balance": "残高"
+  }
+}
+
+================
 File: tailwind.config.ts
 ================
 import type { Config } from 'tailwindcss';
@@ -7363,6 +6970,428 @@ const config: Config = {
   plugins: [require('tailwindcss-animate')],
 };
 export default config;
+
+================
+File: src/app/groups/[id]/expenses/new/page.tsx
+================
+'use client';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { supabase } from '@/lib/supabase';
+import { useParams, useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
+import { useEffect, useState } from 'react';
+import { CameraIcon, UploadIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+
+export default function NewExpense() {
+  const t = useTranslations('expense');
+
+  const formSchema = z.object({
+    description: z.string().min(1, t('descriptionRequired')),
+    amount: z
+      .string()
+      .min(1, t('amountRequired'))
+      .regex(/^\d+(\.\d{0,2})?$/, t('invalidAmount')),
+    payerId: z.string().min(1, t('payerRequired')),
+    participants: z.array(z.string()).min(1, t('participantRequired')),
+  });
+
+  type Member = {
+    id: string;
+    name: string;
+  };
+
+  const params = useParams();
+  const router = useRouter();
+  const { toast } = useToast();
+  const [members, setMembers] = useState<Member[]>([]);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      description: '',
+      amount: '',
+      payerId: '',
+      participants: [],
+    },
+  });
+
+  useEffect(() => {
+    async function fetchMembers() {
+      const { data, error } = await supabase.from('members').select('id, name').eq('group_id', params.id);
+
+      if (error) {
+        toast({
+          title: t('error'),
+          description: t('failedToAddExpense'),
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      if (data) {
+        setMembers(data);
+        // Set all members as participants by default
+        form.setValue(
+          'participants',
+          data.map((member) => member.id)
+        );
+      }
+    }
+
+    fetchMembers();
+  }, [params.id, form, toast, t]);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const amount = parseFloat(values.amount);
+      const shareAmount = amount / values.participants.length;
+
+      // Create expense
+      const { data: expenseData, error: expenseError } = await supabase
+        .from('expenses')
+        .insert({
+          group_id: params.id,
+          description: values.description,
+          amount,
+          payer_id: values.payerId,
+        })
+        .select()
+        .single();
+
+      if (expenseError) throw expenseError;
+
+      // Create expense participants
+      const participantsToInsert = values.participants.map((participantId) => ({
+        expense_id: expenseData.id,
+        member_id: participantId,
+        share_amount: shareAmount,
+      }));
+
+      const { error: participantsError } = await supabase.from('expense_participants').insert(participantsToInsert);
+
+      if (participantsError) throw participantsError;
+
+      toast({
+        title: t('success'),
+        description: t('expenseAdded'),
+      });
+
+      router.push(`/groups/${params.id}`);
+      router.refresh();
+    } catch (error: any) {
+      toast({
+        title: t('error'),
+        description: error.message || t('failedToAddExpense'),
+        variant: 'destructive',
+      });
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-white py-12">
+      <div className="container max-w-2xl mx-auto px-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('addNewExpense')}</CardTitle>
+            <CardDescription>{t('enterDetailsOrScanReceipt')}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-center mb-8 space-x-4">
+              <Button
+                variant="outline"
+                className="w-40 h-40 flex flex-col items-center justify-center space-y-2"
+                onClick={() => {
+                  // TODO: Implement camera functionality
+                  toast({
+                    title: t('comingSoon'),
+                    description: t('cameraFunctionality'),
+                  });
+                }}
+              >
+                <CameraIcon className="h-8 w-8" />
+                <span>{t('takePhoto')}</span>
+              </Button>
+              <Button
+                variant="outline"
+                className="w-40 h-40 flex flex-col items-center justify-center space-y-2"
+                onClick={() => {
+                  // TODO: Implement upload functionality
+                  toast({
+                    title: t('comingSoon'),
+                    description: t('uploadFunctionality'),
+                  });
+                }}
+              >
+                <UploadIcon className="h-8 w-8" />
+                <span>{t('uploadReceipt')}</span>
+              </Button>
+            </div>
+
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('description')}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t('egDinner')} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="amount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('amount')}</FormLabel>
+                      <FormControl>
+                        <Input type="number" step="0.01" placeholder={t('zeroZero')} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="payerId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('paidBy')}</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t('selectWhoPaid')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {members.map((member) => (
+                            <SelectItem key={member.id} value={member.id}>
+                              {member.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="participants"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel>{t('splitBetween')}</FormLabel>
+                      <div className="grid grid-cols-2 gap-4">
+                        {members.map((member) => (
+                          <FormField
+                            key={member.id}
+                            control={form.control}
+                            name="participants"
+                            render={({ field }) => (
+                              <FormItem className="flex items-center space-x-2">
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value?.includes(member.id)}
+                                    onCheckedChange={(checked) => {
+                                      const current = field.value || [];
+                                      const updated = checked ? [...current, member.id] : current.filter((id) => id !== member.id);
+                                      field.onChange(updated);
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal">{member.name}</FormLabel>
+                              </FormItem>
+                            )}
+                          />
+                        ))}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button type="submit" className="w-full">
+                  {t('addNewExpense')}
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+================
+File: src/app/groups/[id]/page.tsx
+================
+import { supabase } from "@/lib/supabase";
+import { notFound } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { formatCurrency } from "@/lib/utils";
+import { ExpenseList } from "@/components/expense-list";
+import { SettlementSummary } from "@/components/settlement-summary";
+import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+async function getGroupData(id: string) {
+  // First, get the group and its members
+  const { data: group, error: groupError } = await supabase
+    .from("groups")
+    .select(`
+      *,
+      members (
+        id,
+        name
+      )
+    `)
+    .eq("id", id)
+    .single();
+
+  if (groupError) throw groupError;
+  if (!group) notFound();
+
+  // Then, get the expenses with their payers and participants
+  const { data: expenses, error: expensesError } = await supabase
+    .from("expenses")
+    .select(`
+      id,
+      description,
+      amount,
+      created_at,
+      payer_id,
+      members!expenses_payer_id_fkey (
+        id,
+        name
+      ),
+      expense_participants (
+        member_id,
+        share_amount
+      )
+    `)
+    .eq("group_id", id);
+
+  if (expensesError) throw expensesError;
+
+  return {
+    ...group,
+    expenses: expenses || [],
+  };
+}
+
+export default async function GroupPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const t = await getTranslations("groupDetails");
+  const group = await getGroupData(params.id);
+
+  // Calculate totals for each member
+  const memberTotals = group.members.reduce((acc: any, member: any) => {
+    acc[member.id] = {
+      name: member.name,
+      paid: 0,
+      owes: 0,
+    };
+    return acc;
+  }, {});
+
+  // Calculate what each member paid and owes
+  group.expenses.forEach((expense: any) => {
+    // Add to paid amount for payer
+    memberTotals[expense.payer_id].paid += expense.amount;
+
+    // Calculate shares
+    expense.expense_participants.forEach((participant: any) => {
+      memberTotals[participant.member_id].owes += participant.share_amount;
+    });
+  });
+
+  return (
+    <div className="min-h-screen bg-white py-12">
+      <div className="container max-w-4xl mx-auto px-4">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">{group.name}</h1>
+          <div className="flex space-x-4">
+            <Link href={`/groups/${params.id}/expenses/new`}>
+              <Button>{t("addExpense")}</Button>
+            </Link>
+            <Link href={`/groups/${params.id}/edit`}>
+              <Button>{t("editGroup")}</Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="grid gap-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("summary")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-6">
+                <div className="grid md:grid-cols-3 gap-4">
+                  {Object.values(memberTotals).map((member: any) => (
+                    <div
+                      key={member.name}
+                      className="bg-secondary/50 rounded-lg p-4"
+                    >
+                      <div className="font-medium mb-2">{member.name}</div>
+                      <div className="text-sm space-y-1">
+                        <div>
+                          {t("paid")}: {formatCurrency(member.paid, group.currency)}
+                        </div>
+                        <div>
+                          {t("owes")}: {formatCurrency(member.owes, group.currency)}
+                        </div>
+                        <div className="font-medium">
+                          {t("balance")}:{" "}
+                          {formatCurrency(
+                            member.paid - member.owes,
+                            group.currency
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <SettlementSummary
+                  memberTotals={memberTotals}
+                  currency={group.currency}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <ExpenseList expenses={group.expenses} currency={group.currency} />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 ================
 File: package.json

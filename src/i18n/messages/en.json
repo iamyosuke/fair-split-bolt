@@ -108,10 +108,26 @@
     "splitBetween": "Split between"
   },
   "groupDetails": {
+    "editGroup": "Manage Group",
     "addExpense": "Add Expense",
     "summary": "Summary",
     "paid": "Paid",
     "owes": "Owes",
     "balance": "Balance"
-  }
+  },
+  "groupEdit": {
+    "groupNameRequired": "Group name is required",
+    "memberNameRequired": "Member name is required",
+    "editGroup": "Edit Group",
+    "groupName": "Group Name",
+    "groupNamePlaceholder": "e.g., Trip to Paris",
+    "members": "Members",
+    "addMember": "Add Member",
+      "memberPlaceholder": "Member {number}",
+      "saveChanges": "Save Changes",
+      "success": "Success!",
+      "groupUpdated": "Group updated successfully.",
+      "error": "Error",
+      "failedToUpdateGroup": "Failed to update group."
+    }
 }

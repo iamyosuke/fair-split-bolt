@@ -91,9 +91,14 @@ export default async function GroupPage({
       <div className="container max-w-4xl mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">{group.name}</h1>
-          <Link href={`/groups/${params.id}/expenses/new`}>
-            <Button>{t("addExpense")}</Button>
-          </Link>
+          <div className="flex space-x-4">
+            <Link href={`/groups/${params.id}/expenses/new`}>
+              <Button>{t("addExpense")}</Button>
+            </Link>
+            <Link href={`/groups/${params.id}/edit`}>
+              <Button>{t("editGroup")}</Button>
+            </Link>
+          </div>
         </div>
 
         <div className="grid gap-8">

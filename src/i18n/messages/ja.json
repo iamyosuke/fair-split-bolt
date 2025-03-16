@@ -113,5 +113,18 @@
     "paid": "支払った",
     "owes": "借りている",
     "balance": "残高"
+  },
+  "groupEdit": {
+    "editGroup": "グループを編集",
+    "groupName": "グループ名",
+    "groupNamePlaceholder": "例：パリ旅行",
+    "members": "メンバー",
+    "addMember": "メンバーを追加",
+    "memberPlaceholder": "メンバー {number}",
+    "saveChanges": "変更を保存",
+    "success": "成功！",
+    "groupUpdated": "グループが正常に更新されました。",
+    "error": "エラー",
+    "failedToUpdateGroup": "グループの更新に失敗しました。"
   }
 }
