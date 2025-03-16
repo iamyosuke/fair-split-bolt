@@ -122,18 +122,18 @@ export default function NewExpense() {
   }
 
   return (
-    <div className={t('minHScreenBgWhitePy12')}>
-      <div className={t('containerMaxW2xlMxAutoPx4')}>
+    <div className="min-h-screen bg-white py-12">
+      <div className="container max-w-2xl mx-auto px-4">
         <Card>
           <CardHeader>
             <CardTitle>{t('addNewExpense')}</CardTitle>
             <CardDescription>{t('enterDetailsOrScanReceipt')}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className={t('flexJustifyCenterMb8SpaceX4')}>
+            <div className="flex justify-center mb-8 space-x-4">
               <Button
                 variant="outline"
-                className={t('w40H40FlexFlexColItemsCenterJustifyCenterSpaceY2')}
+                className="w-40 h-40 flex flex-col items-center justify-center space-y-2"
                 onClick={() => {
                   // TODO: Implement camera functionality
                   toast({
