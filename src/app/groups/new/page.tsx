@@ -29,7 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { useForm, useFieldArray } from "react-hook-form";
 import * as z from "zod";
-import { supabase } from "@/src/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -109,7 +109,7 @@ export default function NewGroup() {
       // Redirect to confirmation page with group ID
       router.push(`/groups/confirmation?id=${groupData.id}`);
     } catch (error: any) {
-      console.error("Error creating group:", error);
+      console.log("Error creating group:", error);
       toast({
         title: "Error",
         description: error.message || "Failed to create group. Please try again.",
