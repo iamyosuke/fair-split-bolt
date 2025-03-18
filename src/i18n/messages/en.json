@@ -53,6 +53,7 @@
       "description": "Share this link with your friends to invite them to your group"
     },
     "form": {
+      "createGroup": "Create Group",
       "groupName": {
         "label": "Group Name",
         "placeholder": "e.g., Trip to Paris"
