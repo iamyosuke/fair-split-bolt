@@ -25,7 +25,9 @@ type Group = {
 const formSchema = z.object({
   groupName: z.string().min(1, "Group name is required"),
   members: z.array(
-    z.string().min(1, "Member name is required")
+    z.object({
+      name: z.string().min(1, "Member name is required")
+    })
   ),
 });
 
@@ -42,7 +44,7 @@ export function EditGroupForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       groupName: "",
-      members: [""],
+      members: [{ name: "" }],
     },
   });
 
@@ -130,7 +132,7 @@ export function EditGroupForm() {
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => append("")}
+                  onClick={() => append({ name: "" })}
                 >
                   <PlusIcon className="h-4 w-4 mr-2" />
                   {t("addMember")}
@@ -140,7 +142,7 @@ export function EditGroupForm() {
                 <div key={field.id} className="flex gap-2">
                   <FormField
                     control={form.control}
-                    name={`members.${index}`}
+                    name={`members.${index}.name`}
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormControl>

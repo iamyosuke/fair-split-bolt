@@ -33,7 +33,11 @@ export default function EditGroup() {
 
   const formSchema = z.object({
     groupName: z.string().min(1, t('groupNameRequired')),
-    members: z.array(z.string().min(1, t('memberNameRequired'))),
+    members: z.array(
+      z.object({
+        name: z.string().min(1, t('memberNameRequired')),
+      })
+    ),
   });
 
   type FormValues = z.infer<typeof formSchema>;
@@ -41,8 +45,8 @@ export default function EditGroup() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      groupName: '',
-      members: [''],
+      groupName: "",
+      members: [{ name: "" }],
     },
   });
 
@@ -196,7 +200,7 @@ export default function EditGroup() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <FormLabel>{t('members')}</FormLabel>
-                    <Button type="button" variant="outline" size="sm" onClick={() => append('')}>
+                    <Button type="button" variant="outline" size="sm" onClick={() => append({ name: "" })}>
                       <PlusIcon className="h-4 w-4 mr-2" />
                       {t('addMember')}
                     </Button>
@@ -205,11 +209,12 @@ export default function EditGroup() {
                     <div key={field.id} className="flex gap-2">
                       <FormField
                         control={form.control}
-                        name={`members.${index}`}
+                        name={`members.${index}.name`}
                         render={({ field }) => (
                           <FormItem className="flex-1">
                             <FormControl>
-                              <Input placeholder={t('memberPlaceholder', { number: index + 1 })} {...field} />
+                              <Input placeholder={t('memberPlaceholder', { number: index + 1 })}
+                              {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
