@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { fetchGroup, fetchExpenses } from "@/lib/api";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,48 +13,22 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 async function getGroupData(id: string) {
-  // First, get the group and its members
-  const { data: group, error: groupError } = await supabase
-    .from("groups")
-    .select(`
-      *,
-      members (
-        id,
-        name
-      )
-    `)
-    .eq("id", id)
-    .single();
+  try {
+    // First, get the group and its members
+    const group = await fetchGroup(id);
+    if (!group) notFound();
 
-  if (groupError) throw groupError;
-  if (!group) notFound();
+    // Then, get the expenses
+    const expenses = await fetchExpenses(id);
 
-  // Then, get the expenses with their payers and participants
-  const { data: expenses, error: expensesError } = await supabase
-    .from("expenses")
-    .select(`
-      id,
-      description,
-      amount,
-      created_at,
-      payer_id,
-      members!expenses_payer_id_fkey (
-        id,
-        name
-      ),
-      expense_participants (
-        member_id,
-        share_amount
-      )
-    `)
-    .eq("group_id", id);
-
-  if (expensesError) throw expensesError;
-
-  return {
-    ...group,
-    expenses: expenses || [],
-  };
+    return {
+      ...group,
+      expenses: expenses || [],
+    };
+  } catch (error) {
+    console.error('Error fetching group data:', error);
+    throw error;
+  }
 }
 
 export default async function GroupPage({
@@ -66,9 +40,9 @@ export default async function GroupPage({
   const group = await getGroupData(params.id);
 
   // Calculate totals for each member
-  const memberTotals = group.members.reduce((acc: any, member: any) => {
-    acc[member.id] = {
-      name: member.name,
+  const memberTotals = group.members.reduce((acc: any, memberName: string) => {
+    acc[memberName] = {
+      name: memberName,
       paid: 0,
       owes: 0,
     };
@@ -78,11 +52,12 @@ export default async function GroupPage({
   // Calculate what each member paid and owes
   group.expenses.forEach((expense: any) => {
     // Add to paid amount for payer
-    memberTotals[expense.payer_id].paid += expense.amount;
+    memberTotals[expense.payer].paid += expense.amount;
 
     // Calculate shares
-    expense.expense_participants.forEach((participant: any) => {
-      memberTotals[participant.member_id].owes += participant.share_amount;
+    const shareAmount = expense.amount / expense.participants.length;
+    expense.participants.forEach((participantName: string) => {
+      memberTotals[participantName].owes += shareAmount;
     });
   });
 

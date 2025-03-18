@@ -1,4 +1,0 @@
-   ALTER TABLE split_even.groups DISABLE ROW LEVEL SECURITY;
-   ALTER TABLE split_even.members DISABLE ROW LEVEL SECURITY;
-   ALTER TABLE split_even.expenses DISABLE ROW LEVEL SECURITY;
-   ALTER TABLE split_even.expense_participants DISABLE ROW LEVEL SECURITY;

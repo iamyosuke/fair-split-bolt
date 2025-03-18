@@ -5,15 +5,23 @@ import { useRouter, useParams } from 'next/navigation';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { supabase } from '@/lib/supabase';
+import { fetchGroup, updateGroup } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Loader2, PlusIcon, TrashIcon, CopyIcon, ShareIcon } from 'lucide-react';
+import { PlusIcon, TrashIcon, CopyIcon, ShareIcon } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { useTranslations } from 'next-intl';
 import { Skeleton } from '@/components/ui/skeleton';
+
+type Group = {
+  id: string;
+  name: string;
+  currency: string;
+  members: string[];
+  created_at: string;
+};
 
 export default function EditGroup() {
   const t = useTranslations('groupEdit');
@@ -25,12 +33,7 @@ export default function EditGroup() {
 
   const formSchema = z.object({
     groupName: z.string().min(1, t('groupNameRequired')),
-    members: z.array(
-      z.object({
-        id: z.string().optional(),
-        name: z.string().min(1, t('memberNameRequired')),
-      })
-    ),
+    members: z.array(z.string().min(1, t('memberNameRequired'))),
   });
 
   type FormValues = z.infer<typeof formSchema>;
@@ -39,57 +42,46 @@ export default function EditGroup() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       groupName: '',
-      members: [{ name: '' }],
+      members: [''],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove } = useFieldArray<FormValues>({
     control: form.control,
     name: 'members',
   });
 
   useEffect(() => {
     async function fetchGroupData() {
-      const { data: group, error: groupError } = await supabase.from('groups').select('name, members (id, name)').eq('id', params.id).single();
+      try {
+        const group = await fetchGroup(params.id as string);
+        
+        form.reset({
+          groupName: group.name,
+          members: group.members,
+        });
 
-      if (groupError) {
+        setLoading(false);
+      } catch (error: any) {
         toast({
           title: t('error'),
-          description: groupError.message,
+          description: error.message,
           variant: 'destructive',
         });
-        return;
       }
-
-      form.reset({
-        groupName: group.name,
-        members: group.members,
-      });
-
-      setLoading(false);
     }
 
-    fetchGroupData();
+    if (params.id) {
+      fetchGroupData();
+    }
   }, [params.id, form, toast, t]);
 
   async function onSubmit(values: FormValues) {
     try {
-      const { error: groupError } = await supabase.from('groups').update({ name: values.groupName }).eq('id', params.id);
-
-      if (groupError) throw groupError;
-
-      const { error: deleteError } = await supabase.from('members').delete().eq('group_id', params.id);
-
-      if (deleteError) throw deleteError;
-
-      const membersToInsert = values.members.map((member) => ({
-        name: member.name,
-        group_id: params.id,
-      }));
-
-      const { error: membersError } = await supabase.from('members').insert(membersToInsert);
-
-      if (membersError) throw membersError;
+      await updateGroup(params.id as string, {
+        name: values.groupName,
+        members: values.members
+      });
 
       toast({
         title: t('success'),
@@ -103,7 +95,6 @@ export default function EditGroup() {
         description: error.message || t('failedToUpdateGroup'),
         variant: 'destructive',
       });
-    } finally {
     }
   }
 
@@ -205,7 +196,7 @@ export default function EditGroup() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <FormLabel>{t('members')}</FormLabel>
-                    <Button type="button" variant="outline" size="sm" onClick={() => append({ name: '' })}>
+                    <Button type="button" variant="outline" size="sm" onClick={() => append('')}>
                       <PlusIcon className="h-4 w-4 mr-2" />
                       {t('addMember')}
                     </Button>
@@ -214,7 +205,7 @@ export default function EditGroup() {
                     <div key={field.id} className="flex gap-2">
                       <FormField
                         control={form.control}
-                        name={`members.${index}.name`}
+                        name={`members.${index}`}
                         render={({ field }) => (
                           <FormItem className="flex-1">
                             <FormControl>

@@ -29,10 +29,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { useForm, useFieldArray } from "react-hook-form";
 import * as z from "zod";
-import { supabase } from "@/lib/supabase";
+import { createGroup } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslations } from "next-intl";
+
+type Group = {
+  id: string;
+  name: string;
+  currency: string;
+  members: string[];
+  created_at: string;
+};
 
 const currencies = [
   { value: "USD", label: "US Dollar ($)" },
@@ -79,29 +87,12 @@ export default function NewGroup() {
 
   async function onSubmit(values: FormValues) {
     try {
-      // Create group
-      const { data: groupData, error: groupError } = await supabase
-        .from("groups")
-        .insert({
-          name: values.groupName,
-          currency: values.currency,
-        })
-        .select()
-        .single();
-
-      if (groupError) throw groupError;
-
-      // Create members
-      const membersToInsert = values.members.map((member) => ({
-        name: member.name,
-        group_id: groupData.id,
-      }));
-
-      const { error: membersError } = await supabase
-        .from("members")
-        .insert(membersToInsert);
-
-      if (membersError) throw membersError;
+      // Create group with members array
+      const groupData = await createGroup({
+        name: values.groupName,
+        currency: values.currency,
+        members: values.members.map(member => member.name),
+      });
 
       toast({
         title: t("success.title"),

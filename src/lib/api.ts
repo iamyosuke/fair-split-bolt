@@ -1,5 +1,7 @@
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export async function fetchGroups() {
-  const response = await fetch('/api/groups');
+  const response = await fetch(`${API_BASE_URL}/api/groups`);
   if (!response.ok) {
     throw new Error('Failed to fetch groups');
   }
@@ -7,7 +9,7 @@ export async function fetchGroups() {
 }
 
 export async function fetchGroup(id: string) {
-  const response = await fetch(`/api/groups/${id}`);
+  const response = await fetch(`${API_BASE_URL}/api/groups/${id}`);
   if (!response.ok) {
     throw new Error('Failed to fetch group');
   }
@@ -15,7 +17,7 @@ export async function fetchGroup(id: string) {
 }
 
 export async function createGroup(data: any) {
-  const response = await fetch('/api/groups', {
+  const response = await fetch(`${API_BASE_URL}/api/groups`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -29,7 +31,7 @@ export async function createGroup(data: any) {
 }
 
 export async function updateGroup(id: string, data: any) {
-  const response = await fetch(`/api/groups/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/api/groups/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -43,7 +45,7 @@ export async function updateGroup(id: string, data: any) {
 }
 
 export async function deleteGroup(id: string) {
-  const response = await fetch(`/api/groups/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/api/groups/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) {
@@ -53,7 +55,9 @@ export async function deleteGroup(id: string) {
 }
 
 export async function fetchExpenses(groupId?: string) {
-  const url = groupId ? `/api/expenses?groupId=${groupId}` : '/api/expenses';
+  const url = groupId
+    ? `${API_BASE_URL}/api/expenses?groupId=${groupId}`
+    : `${API_BASE_URL}/api/expenses`;
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error('Failed to fetch expenses');
@@ -62,7 +66,7 @@ export async function fetchExpenses(groupId?: string) {
 }
 
 export async function fetchExpense(id: string) {
-  const response = await fetch(`/api/expenses/${id}`);
+  const response = await fetch(`${API_BASE_URL}/api/expenses/${id}`);
   if (!response.ok) {
     throw new Error('Failed to fetch expense');
   }
@@ -70,7 +74,7 @@ export async function fetchExpense(id: string) {
 }
 
 export async function createExpense(data: any) {
-  const response = await fetch('/api/expenses', {
+  const response = await fetch(`${API_BASE_URL}/api/expenses`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -84,7 +88,7 @@ export async function createExpense(data: any) {
 }
 
 export async function updateExpense(id: string, data: any) {
-  const response = await fetch(`/api/expenses/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/api/expenses/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -98,7 +102,7 @@ export async function updateExpense(id: string, data: any) {
 }
 
 export async function deleteExpense(id: string) {
-  const response = await fetch(`/api/expenses/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/api/expenses/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) {

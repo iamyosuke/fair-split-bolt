@@ -9,12 +9,20 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { supabase } from '@/lib/supabase';
 import { useParams, useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { useEffect, useState } from 'react';
 import { CameraIcon, UploadIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { fetchGroup, createExpense } from '@/lib/api';
+
+type Group = {
+  id: string;
+  name: string;
+  currency: string;
+  members: string[];
+  created_at: string;
+};
 
 export default function NewExpense() {
   const t = useTranslations('expense');
@@ -25,19 +33,14 @@ export default function NewExpense() {
       .string()
       .min(1, t('amountRequired'))
       .regex(/^\d+(\.\d{0,2})?$/, t('invalidAmount')),
-    payerId: z.string().min(1, t('payerRequired')),
-    participants: z.array(z.string()).min(1, t('participantRequired')),
+    payerId: z.string().min(1, t('payerRequired')), // メンバーの名前
+    participants: z.array(z.string()).min(1, t('participantRequired')), // メンバー名の配列
   });
-
-  type Member = {
-    id: string;
-    name: string;
-  };
 
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
-  const [members, setMembers] = useState<Member[]>([]);
+  const [group, setGroup] = useState<Group | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,60 +53,37 @@ export default function NewExpense() {
   });
 
   useEffect(() => {
-    async function fetchMembers() {
-      const { data, error } = await supabase.from('members').select('id, name').eq('group_id', params.id);
-
-      if (error) {
+    async function fetchGroupData() {
+      try {
+        const groupData = await fetchGroup(params.id as string);
+        setGroup(groupData);
+        // Set all members as participants by default
+        form.setValue('participants', groupData.members);
+      } catch (error: any) {
         toast({
           title: t('error'),
-          description: t('failedToAddExpense'),
+          description: error.message || t('failedToAddExpense'),
           variant: 'destructive',
         });
-        return;
-      }
-
-      if (data) {
-        setMembers(data);
-        // Set all members as participants by default
-        form.setValue(
-          'participants',
-          data.map((member) => member.id)
-        );
       }
     }
 
-    fetchMembers();
+    if (params.id) {
+      fetchGroupData();
+    }
   }, [params.id, form, toast, t]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const amount = parseFloat(values.amount);
-      const shareAmount = amount / values.participants.length;
 
-      // Create expense
-      const { data: expenseData, error: expenseError } = await supabase
-        .from('expenses')
-        .insert({
-          group_id: params.id,
-          description: values.description,
-          amount,
-          payer_id: values.payerId,
-        })
-        .select()
-        .single();
-
-      if (expenseError) throw expenseError;
-
-      // Create expense participants
-      const participantsToInsert = values.participants.map((participantId) => ({
-        expense_id: expenseData.id,
-        member_id: participantId,
-        share_amount: shareAmount,
-      }));
-
-      const { error: participantsError } = await supabase.from('expense_participants').insert(participantsToInsert);
-
-      if (participantsError) throw participantsError;
+      await createExpense({
+        group_id: params.id as string,
+        description: values.description,
+        amount,
+        payer: values.payerId, // payerIdはメンバーの名前
+        participants: values.participants, // participantsはメンバー名の配列
+      });
 
       toast({
         title: t('success'),
@@ -204,9 +184,9 @@ export default function NewExpense() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {members.map((member) => (
-                            <SelectItem key={member.id} value={member.id}>
-                              {member.name}
+                          {group?.members.map((memberName) => (
+                            <SelectItem key={memberName} value={memberName}>
+                              {memberName}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -223,24 +203,24 @@ export default function NewExpense() {
                     <FormItem>
                       <FormLabel>{t('splitBetween')}</FormLabel>
                       <div className="grid grid-cols-2 gap-4">
-                        {members.map((member) => (
+                        {group?.members.map((memberName) => (
                           <FormField
-                            key={member.id}
+                            key={memberName}
                             control={form.control}
                             name="participants"
                             render={({ field }) => (
                               <FormItem className="flex items-center space-x-2">
                                 <FormControl>
                                   <Checkbox
-                                    checked={field.value?.includes(member.id)}
+                                    checked={field.value?.includes(memberName)}
                                     onCheckedChange={(checked) => {
                                       const current = field.value || [];
-                                      const updated = checked ? [...current, member.id] : current.filter((id) => id !== member.id);
+                                      const updated = checked ? [...current, memberName] : current.filter(name => name !== memberName);
                                       field.onChange(updated);
                                     }}
                                   />
                                 </FormControl>
-                                <FormLabel className="font-normal">{member.name}</FormLabel>
+                                <FormLabel className="font-normal">{memberName}</FormLabel>
                               </FormItem>
                             )}
                           />

@@ -22,9 +22,8 @@ type Expense = {
   description: string;
   amount: number;
   created_at: string;
-  members: {
-    name: string;
-  };
+  payer: string;
+  participants: string[];
 };
 
 type ExpenseListProps = {
@@ -53,7 +52,7 @@ export function ExpenseList({ expenses, currency }: ExpenseListProps) {
             {expenses.map((expense) => (
               <TableRow key={expense.id}>
                 <TableCell>{expense.description}</TableCell>
-                <TableCell>{expense.members.name}</TableCell>
+                <TableCell>{expense.payer}</TableCell>
                 <TableCell>{formatDate(expense.created_at)}</TableCell>
                 <TableCell className="text-right">
                   {formatCurrency(expense.amount, currency)}
