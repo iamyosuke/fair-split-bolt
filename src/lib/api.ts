@@ -1,4 +1,5 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_VERCEL_URL || process.env.NEXT_PUBLIC_DEVELOPMENT_URL;
+
 
 export async function fetchGroups() {
   const response = await fetch(`${API_BASE_URL}/api/groups`);
