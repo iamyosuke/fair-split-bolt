@@ -36,6 +36,7 @@ export async function PUT(
     });
     return NextResponse.json(group);
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ error: 'Failed to update group' }, { status: 500 });
   }
 }

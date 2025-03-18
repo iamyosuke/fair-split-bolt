@@ -84,7 +84,7 @@ export default function EditGroup() {
     try {
       await updateGroup(params.id as string, {
         name: values.groupName,
-        members: values.members
+        members: values.members.map(member => member.name),
       });
 
       toast({

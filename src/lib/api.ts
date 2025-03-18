@@ -1,4 +1,8 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_VERCEL_URL || process.env.NEXT_PUBLIC_DEVELOPMENT_URL;
+  const API_BASE_URL = process.env.NODE_ENV === 'development' ? "http://localhost:3000" : process.env.NEXT_PUBLIC_VERCEL_URL;
+  if (!API_BASE_URL) {
+    throw new Error('API_BASE_URL is not set');
+  }
+
 
 
 export async function fetchGroups() {
