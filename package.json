@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "postinstall": "prisma generate",
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@next/swc-wasm-nodejs": "13.5.1",
