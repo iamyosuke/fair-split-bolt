@@ -51,12 +51,29 @@ export default async function GroupPage({
 
   // Calculate what each member paid and owes
   group.expenses.forEach((expense: any) => {
+    // Ensure payer exists in memberTotals
+    if (!memberTotals[expense.payer]) {
+      memberTotals[expense.payer] = {
+        name: expense.payer,
+        paid: 0,
+        owes: 0,
+      };
+    }
+
     // Add to paid amount for payer
     memberTotals[expense.payer].paid += expense.amount;
 
     // Calculate shares
     const shareAmount = expense.amount / expense.participants.length;
     expense.participants.forEach((participantName: string) => {
+      // Ensure participant exists in memberTotals
+      if (!memberTotals[participantName]) {
+        memberTotals[participantName] = {
+          name: participantName,
+          paid: 0,
+          owes: 0,
+        };
+      }
       memberTotals[participantName].owes += shareAmount;
     });
   });
