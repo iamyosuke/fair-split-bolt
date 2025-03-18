@@ -1,0 +1,36 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["split_even"]
+}
+
+model Group {
+  id         String    @id @default(uuid())
+  name       String
+  members    String[]
+  currency   String
+  created_at DateTime  @default(now())
+  expenses   Expense[]
+
+  @@schema("split_even")
+  @@map("groups")
+}
+
+model Expense {
+  id           String   @id @default(uuid())
+  group_id     String
+  amount       Float
+  description  String
+  payer        String
+  participants String[]
+  created_at   DateTime @default(now())
+  group        Group    @relation(fields: [group_id], references: [id])
+
+  @@schema("split_even")
+  @@map("expenses")
+}
