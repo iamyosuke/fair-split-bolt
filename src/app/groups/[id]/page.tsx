@@ -1,4 +1,3 @@
-import { fetchGroup, fetchExpenses } from "@/lib/api";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { ExpenseList } from "@/components/expense-list";
 import { SettlementSummary } from "@/components/settlement-summary";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -15,11 +15,14 @@ export const revalidate = 0;
 async function getGroupData(id: string) {
   try {
     // First, get the group and its members
-    const group = await fetchGroup(id);
+    const group = await prisma.group.findUnique({
+      where: { id: id },
+      include: {
+        expenses: true,
+      },
+    });
     if (!group) notFound();
-
-    // Then, get the expenses
-    const expenses = await fetchExpenses(id);
+    const expenses = group.expenses;
 
     return {
       ...group,

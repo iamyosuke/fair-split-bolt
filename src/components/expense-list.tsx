@@ -16,15 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatCurrency, formatDate } from "@/lib/utils";
-
-type Expense = {
-  id: string;
-  description: string;
-  amount: number;
-  created_at: string;
-  payer: string;
-  participants: string[];
-};
+import { Expense } from "@prisma/client";
 
 type ExpenseListProps = {
   expenses: Expense[];
@@ -53,7 +45,7 @@ export function ExpenseList({ expenses, currency }: ExpenseListProps) {
               <TableRow key={expense.id}>
                 <TableCell>{expense.description}</TableCell>
                 <TableCell>{expense.payer}</TableCell>
-                <TableCell>{formatDate(expense.created_at)}</TableCell>
+                <TableCell>{expense.created_at.toLocaleDateString()}</TableCell>
                 <TableCell className="text-right">
                   {formatCurrency(expense.amount, currency)}
                 </TableCell>
