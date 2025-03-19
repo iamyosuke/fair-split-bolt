@@ -1,11 +1,8 @@
-  const API_BASE_URL = process.env.NODE_ENV === 'development' ? "http://localhost:3000" : process.env.NEXT_PUBLIC_VERCEL_URL;
-  if (!API_BASE_URL) {
-    throw new Error('API_BASE_URL is not set');
-  }
-  console.log(API_BASE_URL);
-
-
-
+import { headers } from "next/headers";
+const host = headers().get("host");
+const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+const API_BASE_URL = `${protocol}://${host}`;
+console.log(API_BASE_URL);
 export async function fetchGroups() {
   const response = await fetch(`${API_BASE_URL}/api/groups`);
   if (!response.ok) {
